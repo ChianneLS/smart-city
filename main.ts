@@ -6,6 +6,7 @@ function plant_temperature_check () {
     } else {
         OLED.writeStringNewLine("It's a good temperature for me :)")
     }
+    basic.pause(500)
 }
 function Clear_Screens () {
     basic.clearScreen()
@@ -21,8 +22,6 @@ function Water_Bowl_Check () {
     } else {
         OLED.writeStringNewLine("Water is good meow")
     }
-    basic.pause(500)
-    Clear_Screens()
 }
 function Soil_Check () {
     if (Environment.ReadSoilHumidity(AnalogPin.P14) < 30) {
@@ -34,21 +33,51 @@ function Soil_Check () {
     }
     OLED.newLine()
 }
+function Reset () {
+    Clear_Screens()
+    Environment.ledBrightness(AnalogPin.P1, false)
+    Environment.ledBrightness(AnalogPin.P2, false)
+    Environment.ledBrightness(AnalogPin.P2, false)
+    SmartCity.turn_servo(0, AnalogPin.P10)
+}
 function Plants_Health () {
     basic.showIcon(IconNames.Butterfly)
     Soil_Check()
     basic.pause(2000)
     plant_temperature_check()
     basic.pause(5000)
-    Clear_Screens()
+}
+function Rubbish () {
+    basic.showLeds(`
+        . . # . .
+        . . # # .
+        # # . . #
+        . # # # .
+        . # # # .
+        `)
+    if (Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_mm, DigitalPin.P15) < 15) {
+        Environment.ledBrightness(AnalogPin.P3, true)
+        OLED.writeStringNewLine("The rubbish bin is chill")
+    } else if (Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_mm, DigitalPin.P15) < 30 && Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_mm, DigitalPin.P16) > 16) {
+        Environment.ledBrightness(AnalogPin.P2, true)
+        OLED.writeStringNewLine("The rubbish is slowly building")
+    } else {
+        Environment.ledBrightness(AnalogPin.P1, true)
+        OLED.writeStringNewLine("Time to take out the rubbish")
+    }
 }
 OLED.init(128, 64)
 Clear_Screens()
 basic.showIcon(IconNames.House)
 OLED.writeStringNewLine("System Starting")
 basic.forever(function () {
-    basic.pause(100)
     Water_Bowl_Check()
     basic.pause(500)
+    Reset()
     Plants_Health()
+    basic.pause(500)
+    Reset()
+    Rubbish()
+    basic.pause(500)
+    Reset()
 })
