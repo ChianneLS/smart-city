@@ -55,10 +55,10 @@ function Rubbish () {
         . # # # .
         . # # # .
         `)
-    if (Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_mm, DigitalPin.P15) < 15) {
+    if (Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_cm, DigitalPin.P15) < 15) {
         Environment.ledBrightness(AnalogPin.P3, true)
         OLED.writeStringNewLine("The rubbish bin is chill")
-    } else if (Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_mm, DigitalPin.P15) < 30 && Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_mm, DigitalPin.P16) > 16) {
+    } else if (Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_cm, DigitalPin.P15) < 30 && Environment.sonarbit_distance(Environment.Distance_Unit.Distance_Unit_cm, DigitalPin.P15) > 16) {
         Environment.ledBrightness(AnalogPin.P2, true)
         OLED.writeStringNewLine("The rubbish is slowly building")
     } else {
