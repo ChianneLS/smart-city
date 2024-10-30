@@ -37,7 +37,9 @@ function Soil_Check () {
 function Plants_Health () {
     basic.showIcon(IconNames.Butterfly)
     Soil_Check()
-    basic.pause(500)
+    basic.pause(2000)
+    plant_temperature_check()
+    basic.pause(5000)
     Clear_Screens()
 }
 OLED.init(128, 64)
